@@ -1,14 +1,5 @@
 <template>
     <div>
-        <v-container>
-            <v-row>
-                <v-col>
-                    <h2>My Posts</h2>
-                </v-col>
-                <v-col>
-                    <NewPost/>
-                </v-col>
-            </v-row>
             <v-layout row wrap>
                 <v-flex xs12 sm6 md4 lg3
                         v-for="post in posts"
@@ -19,18 +10,16 @@
                     </v-container>
                 </v-flex>
             </v-layout>
-        </v-container>
     </div>
 </template>
 
 <script>
     import Post from './Post';
-    import NewPost from './NewPost';
+
     export default {
         name: 'Posts',
         components: {
-            Post,
-            NewPost
+            Post
         },
         props: ['posts']
     }

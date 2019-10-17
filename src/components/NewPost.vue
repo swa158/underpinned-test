@@ -1,54 +1,34 @@
 <template>
-    <div class="text-center">
-        <v-dialog
-                v-model="dialog"
-                width="500"
-        >
-            <template v-slot:activator="{ on }">
-                <v-btn
-                        color="red lighten-2"
-                        dark
-                        v-on="on"
-                >
-                    Click Me
-                </v-btn>
-            </template>
-
-            <v-card>
-                <v-card-title
-                        class="headline grey lighten-2"
-                        primary-title
-                >
-                    Privacy Policy
-                </v-card-title>
-
-                <v-card-text>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                </v-card-text>
-
-                <v-divider></v-divider>
-
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn
-                            color="primary"
-                            text
-                            @click="dialog = false"
-                    >
-                        I accept
-                    </v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
+    <div>
+        <form @submit="addPost">
+            <input type="text" v-model="title" name="title" placeholder="Title">
+            <input type="text" v-model="description" name="description" placeholder="Description">
+            <input type="submit" value="Add" class="btn">
+        </form>
     </div>
 </template>
 
 <script>
     export default {
-        data () {
+        name: "NewPost",
+        data() {
             return {
-                dialog: false,
+                title: '',
+                description: ''
             }
         },
+        methods: {
+            addPost(e) {
+                e.preventDefault();
+                const newPost = {
+                    userId: 1,  // Since there is no authentication
+                    title: this.title,
+                    body: this.description
+                };
+                this.$emit('add-post', newPost);
+                this.title = '';
+                this.description = '';
+            }
+        }
     }
 </script>
