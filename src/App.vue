@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <Posts v-bind:posts="posts"/>
+        <Posts v-bind:posts="posts" v-on:del-post="deletePost"/>
     </div>
 </template>
 
@@ -191,17 +191,22 @@
                     }
                 ]
             }
+        },
+        methods: {
+            deletePost(id) {
+                this.posts = this.posts.filter(post => post.id !== id);
+            }
         }
     }
 </script>
 
 <style>
-    * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-    }
+    /** {*/
+        /*box-sizing: border-box;*/
+        /*margin: 0;*/
+        /*padding: 0;*/
+    /*}*/
     body {
-        font-family: Comic Sans MS, serif;
+        font-family: Roboto, sans-serif;
     }
 </style>
