@@ -1,21 +1,21 @@
 <template>
     <div id="app">
         <v-container>
-                <v-row>
-                    <v-col cols="12" sm="3" xs="6">
-                        <h1>My Posts</h1>
-                    </v-col>
-                    <v-col cols="12" sm="9" xs="6">                    
-                        <NewPost v-on:add-post="submitPost"/>
-                    </v-col>
-                </v-row>
+            <v-row>
+                <v-col cols="12" sm="3" xs="6">
+                    <h1>My Posts</h1>
+                </v-col>
+                <v-col cols="12" sm="9" xs="6">
+                    <NewPost v-on:add-post="submitPost"/>
+                </v-col>
+            </v-row>
             <Posts v-bind:posts="posts" v-on:del-post="deletePost" v-on:edit-post="editPost"/>
-        <v-snackbar
-            v-model="snackbar"
-            :timeout="2000"
+            <v-snackbar
+                    v-model="snackbar"
+                    :timeout="2000"
             >
-            <span>{{snackbarText}}</span>
-        </v-snackbar>
+                <span>{{snackbarText}}</span>
+            </v-snackbar>
         </v-container>
     </div>
 </template>
@@ -56,33 +56,33 @@
                     body,
                     userId
                 })
-                .then(res => {
-                    this.posts = [res.data, ...this.posts]
-                })
-                .catch(() => {
-                    this.snackbar = true;
-                    this.snackbarText = "Something went wrong adding this post"
-                })
+                    .then(res => {
+                        this.posts = [res.data, ...this.posts]
+                    })
+                    .catch(() => {
+                        this.snackbar = true;
+                        this.snackbarText = "Something went wrong adding this post"
+                    })
             },
             editPost(updatedPost) {
                 axios.put(`https://jsonplaceholder.typicode.com/posts/${updatedPost.id}`, updatedPost)
-                .then(res => {
-                    const postIndex = this.posts.findIndex(post => post.id == updatedPost.id);
-                    const newPosts = this.posts;
-                    newPosts[postIndex] = res.data;
-                    this.posts = Object.assign([], this.posts, newPosts);
-                })
-                .catch(() => {
-                    this.snackbar = true
-                    this.snackbarText = "Sorry, this post cannot be edited"
-                })
+                    .then(res => {
+                        const postIndex = this.posts.findIndex(post => post.id == updatedPost.id);
+                        const newPosts = this.posts;
+                        newPosts[postIndex] = res.data;
+                        this.posts = Object.assign([], this.posts, newPosts);
+                    })
+                    .catch(() => {
+                        this.snackbar = true;
+                        this.snackbarText = "Sorry, this post cannot be edited"
+                    })
             }
         },
         created() {
             axios.get('https://jsonplaceholder.typicode.com/users/1/posts')
                 .then(res => this.posts = res.data)
                 .catch(() => {
-                    this.snackbar = true
+                    this.snackbar = true;
                     this.snackbarText = "Something went wrong fetching your posts"
                 })
         }
