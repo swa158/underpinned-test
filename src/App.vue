@@ -10,6 +10,12 @@
                     </v-col>
                 </v-row>
             <Posts v-bind:posts="posts" v-on:del-post="deletePost" v-on:edit-post="editPost"/>
+        <v-snackbar
+            v-model="snackbar"
+            :timeout="2000"
+            >
+            <span>Sorry, this post cannot be edited</span>
+        </v-snackbar>
         </v-container>
     </div>
 </template>
@@ -27,7 +33,8 @@
         },
         data() {
             return {
-                posts: []
+                posts: [],
+                snackbar: false
             }
         },
         methods: {
@@ -39,10 +46,11 @@
                     // .catch(err => )   //todo put toast here
             },
             submitPost(newPost) {
-                const {title, body} = newPost;
+                const {title, body, userId} = newPost;
                 axios.post('https://jsonplaceholder.typicode.com/users/1/posts', {
                     title,
-                    body
+                    body,
+                    userId
                 })
                 .then(res => {
                     this.posts = [res.data, ...this.posts]
@@ -57,7 +65,7 @@
                     newPosts[postIndex] = res.data;
                     this.posts = Object.assign([], this.posts, newPosts);
                 })
-                // .catch(err => )   //todo put toast here
+                .catch(() => this.snackbar = true)   //todo put toast here
             }
         },
         created() {
@@ -69,11 +77,6 @@
 </script>
 
 <style>
-    /** {*/
-        /*box-sizing: border-box;*/
-        /*margin: 0;*/
-        /*padding: 0;*/
-    /*}*/
     body {
         font-family: Roboto, sans-serif;
     }
