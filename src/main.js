@@ -4,6 +4,8 @@ import vuetify from './plugins/vuetify';
 
 Vue.config.productionTip = false;
 
+document.body.setAttribute('data-app', true)
+
 new Vue({
   vuetify,
   render: h => h(App)
