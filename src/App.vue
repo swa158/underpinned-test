@@ -14,7 +14,7 @@
             v-model="snackbar"
             :timeout="2000"
             >
-            <span>Sorry, this post cannot be edited</span>
+            <span>{{snackbarText}}</span>
         </v-snackbar>
         </v-container>
     </div>
@@ -34,7 +34,8 @@
         data() {
             return {
                 posts: [],
-                snackbar: false
+                snackbar: false,
+                snackbarText: ''
             }
         },
         methods: {
@@ -43,7 +44,10 @@
                     .then(() => {
                         this.posts = this.posts .filter(post => post.id !== id);
                     })
-                    // .catch(err => )   //todo put toast here
+                    .catch(() => {
+                        this.snackbar = true
+                        this.snackbarText = "Sorry, this post cannot be deleted"
+                    })
             },
             submitPost(newPost) {
                 const {title, body, userId} = newPost;
@@ -55,7 +59,10 @@
                 .then(res => {
                     this.posts = [res.data, ...this.posts]
                 })
-                // .catch(err => )   //todo put toast here
+                .catch(() => {
+                    this.snackbar = true;
+                    this.snackbarText = "Something went wrong adding this post"
+                })
             },
             editPost(updatedPost) {
                 axios.put(`https://jsonplaceholder.typicode.com/posts/${updatedPost.id}`, updatedPost)
@@ -65,13 +72,19 @@
                     newPosts[postIndex] = res.data;
                     this.posts = Object.assign([], this.posts, newPosts);
                 })
-                .catch(() => this.snackbar = true)   //todo put toast here
+                .catch(() => {
+                    this.snackbar = true
+                    this.snackbarText = "Sorry, this post cannot be edited"
+                })
             }
         },
         created() {
             axios.get('https://jsonplaceholder.typicode.com/users/1/posts')
                 .then(res => this.posts = res.data)
-                // .catch(err => )   //todo put toast here
+                .catch(() => {
+                    this.snackbar = true
+                    this.snackbarText = "Something went wrong fetching your posts"
+                })
         }
     }
 </script>
